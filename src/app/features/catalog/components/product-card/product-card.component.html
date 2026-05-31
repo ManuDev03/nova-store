@@ -1,1 +1,46 @@
-<p>product-card works!</p>
+<article
+  class="product-card"
+  [class.out-of-stock]="!product().inStock"
+  [routerLink]="['/product', product().id]"
+  role="article"
+  [attr.aria-label]="product().name">
+
+  <!-- Badge -->
+  @if (product().badge) {
+    <span class="badge">{{ product().badge }}</span>
+  }
+
+  <!-- Imagen -->
+  <div class="product-image">
+    <img
+      [src]="product().images[0]"
+      [alt]="product().name"
+      loading="lazy"/>
+    @if (!product().inStock) {
+      <div class="overlay">Sin stock</div>
+    }
+  </div>
+
+  <!-- Info -->
+  <div class="product-info">
+    <span class="category">{{ product().category }}</span>
+    <h3 class="product-name">{{ product().name }}</h3>
+
+    <!-- Rating -->
+    <div class="rating" [attr.aria-label]="'Rating: ' + product().rating + ' de 5'">
+      <span class="stars">★</span>
+      <span class="rating-value">{{ product().rating }}</span>
+    </div>
+
+    <div class="product-footer">
+      <span class="price">{{ product().price | currency:'COP':'symbol':'1.0-0' }}</span>
+      <button
+        class="btn-cart"
+        (click)="addToCart($event)"
+        [disabled]="!product().inStock"
+        [attr.aria-label]="'Agregar ' + product().name + ' al carrito'">
+        {{ product().inStock ? 'Agregar' : 'Agotado' }}
+      </button>
+    </div>
+  </div>
+</article>

@@ -1,1 +1,41 @@
-<p>catalog works!</p>
+<main class="catalog-page">
+  <header class="catalog-header">
+    <h1>Nova Store</h1>
+    <p>Descubre nuestra colección</p>
+  </header>
+
+  <!-- Loading state -->
+  @if (loading()) {
+    <div class="state-container">
+      <div class="spinner"></div>
+      <p>Cargando productos...</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (error()) {
+    <div class="state-container error">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!loading() && !error() && products().length === 0) {
+    <div class="state-container">
+      <span class="empty-icon">🔍</span>
+      <p>No se encontraron productos</p>
+    </div>
+  }
+
+  <!-- Grid de productos -->
+  @if (!loading() && products().length > 0) {
+    <section class="products-grid" aria-label="Catálogo de productos">
+      @for (product of products(); track product.id) {
+        <app-product-card
+          [product]="product"
+          (onAddToCart)="onAddToCart($event)"/>
+      }
+    </section>
+  }
+</main>
