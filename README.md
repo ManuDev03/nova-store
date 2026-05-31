@@ -1,59 +1,54 @@
-# NovaStore
+# Nova Store — Proyecto de prueba
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+Resumen
+- Aplicación demo de e‑commerce (Angular) con un mock API (`json-server`).
+- Pensada para pruebas técnicas y desarrollo local.
 
-## Development server
+Estado actual
+- Servidor mock API: `db.json` (JSON Server).
+- La app es standalone Angular (v21+), arquitectura simple por features.
+- Adaptaciones realizadas:
+	- Carga fiable del detalle de producto (fallback: petición por id si no está en memoria).
+	- `ProductService` incluye `getProductByIdAsync(id)` para solicitar un producto individual.
+	- `product-detail.component` usa signals/effects para reaccionar a la carga de productos.
+	- Componentes responsive: `product-filters` (overlay móvil) y `navbar` (menú hamburguesa móvil).
 
-To start a local development server, run:
+Estructura clave
+- `src/app/features/catalog` — Catálogo, filtros y tarjetas de producto.
+- `src/app/features/product-detail` — Página de detalle de producto.
+- `src/app/core/services` — Servicios `ProductService`, `CartService`.
+- `db.json` — datos del mock API.
+- `Dockerfile`, `docker-compose.yml` — configuración para ejecutar la app + mock API en contenedores (opcional).
 
+Prerequisitos (opcional para Docker)
+- Node.js (recomendado v18+ o v22 para builds locales)
+- pnpm
+- Docker / Docker Compose (si usas contenedores)
+
+Comandos de desarrollo (sin Docker)
+1. Instalar dependencias:
 ```bash
-ng serve
+pnpm install
+```
+2. Levantar mock API:
+```bash
+pnpm run mock-api
+```
+3. Levantar la app (dev server):
+```bash
+pnpm start
+```
+4. Tests:
+```bash
+pnpm test
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+Uso con Docker (ligero, pensado para pruebas)
+- Construir y levantar (con `docker compose`):
 ```bash
-ng generate component component-name
+docker compose up --build
 ```
+- Servicios expuestos:
+	- App: http://localhost:4200 (servida con `http-server` desde la build)
+	- Mock API: http://localhost:3000
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
