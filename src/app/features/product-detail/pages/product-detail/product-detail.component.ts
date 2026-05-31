@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, effect } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Product } from '../../../../core/model';
 import { CartService, ProductService } from '../../../../core/services';
@@ -23,19 +23,35 @@ export class ProductDetailComponent implements OnInit {
   selectedVariant = signal<string>('');
   addedToCart = signal<boolean>(false);
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+  private id = Number(this.route.snapshot.paramMap.get('id'));
+  private requested = false;
 
-    if (this.productService.products().length === 0) {
-      this.productService.loadProducts();
-    }
-
-    const found = this.productService.getProductById(id);
+  private productEffect = effect(() => {
+    const found = this.productService.getProductById(this.id);
     if (found) {
       this.product.set(found);
-      this.selectedImage.set(found.images[0]);
-      this.selectedVariant.set(found.variants[0] ?? '');
+      this.selectedImage.set(found.images?.[0] ?? '');
+      this.selectedVariant.set(found.variants?.[0] ?? '');
       this.loadRelated(found);
+      return;
+    }
+
+    if (!found && !this.requested) {
+      this.requested = true;
+      this.productService.getProductByIdAsync(this.id).then(prod => {
+        if (prod) {
+          this.product.set(prod);
+          this.selectedImage.set(prod.images?.[0] ?? '');
+          this.selectedVariant.set(prod.variants?.[0] ?? '');
+          this.loadRelated(prod);
+        }
+      });
+    }
+  });
+
+  ngOnInit(): void {
+    if (this.productService.products().length === 0) {
+      this.productService.loadProducts();
     }
   }
 

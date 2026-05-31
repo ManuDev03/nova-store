@@ -1,4 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { Category, Product, ProductFilters, SortOption } from '../model';
 import { HttpClient } from '@angular/common/http';
 
@@ -94,6 +95,26 @@ export class ProductService {
 
   getProductById(id: number): Product | undefined {
     return this._products().find(p => p.id === id);
+  }
+
+  async getProductByIdAsync(id: number): Promise<Product | undefined> {
+    const existing = this.getProductById(id);
+    if (existing) return existing;
+
+    try {
+      const product = await lastValueFrom(this.http.get<Product>(`/api/products/${id}`));
+      if (product) {
+        this._products.update(list => {
+          if (!list.some(p => p.id === product.id)) return [...list, product];
+          return list;
+        });
+        return product;
+      }
+    } catch (err) {
+      this._error.set('Error al cargar el producto.');
+    }
+
+    return undefined;
   }
 
   updateFilters(partial: Partial<ProductFilters>): void {
