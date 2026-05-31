@@ -1,1 +1,111 @@
-<p>product-detail works!</p>
+@if (product()) {
+  <div class="detail-page">
+
+    <!-- Botón volver al catálogo -->
+    <a routerLink="/" class="back-link" aria-label="Volver al catálogo">
+      ← Volver
+    </a>
+
+    <div class="detail-layout">
+
+      <!-- Galería de imágenes -->
+      <div class="gallery">
+        <img
+          class="main-image"
+          [src]="selectedImage()"
+          [alt]="product()!.name"
+          loading="lazy"/>
+        <div class="thumbnails">
+          @for (img of product()!.images; track img) {
+            <img
+              class="thumbnail"
+              [class.active]="selectedImage() === img"
+              [src]="img"
+              [alt]="product()!.name"
+              (click)="selectImage(img)"
+              loading="lazy"/>
+          }
+        </div>
+      </div>
+
+      <!-- Información del producto -->
+      <div class="product-info">
+        <span class="category">{{ product()!.category }}</span>
+
+        @if (product()!.badge) {
+          <span class="badge">{{ product()!.badge }}</span>
+        }
+
+        <h1 class="product-name">{{ product()!.name }}</h1>
+
+        <!-- Rating -->
+        <div class="rating" [attr.aria-label]="'Rating ' + product()!.rating + ' de 5'">
+          <span class="stars">★</span>
+          <span>{{ product()!.rating }}</span>
+        </div>
+
+        <p class="price">{{ product()!.price | currency:'COP':'symbol':'1.0-0' }}</p>
+
+        <p class="description">{{ product()!.description }}</p>
+
+        <!-- Variantes -->
+        @if (product()!.variants.length > 0) {
+          <div class="variants">
+            <p class="variants-label">Variante: <strong>{{ selectedVariant() }}</strong></p>
+            <div class="variants-list">
+              @for (variant of product()!.variants; track variant) {
+                <button
+                  class="variant-btn"
+                  [class.active]="selectedVariant() === variant"
+                  (click)="selectVariant(variant)"
+                  [attr.aria-label]="'Seleccionar variante ' + variant">
+                  {{ variant }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Stock -->
+        <p class="stock" [class.out]="!product()!.inStock">
+          {{ product()!.inStock ? '✓ En stock (' + product()!.stock + ' disponibles)' : '✗ Agotado' }}
+        </p>
+
+        <!-- CTA -->
+        <button
+          class="btn-add"
+          [class.added]="addedToCart()"
+          [disabled]="!product()!.inStock"
+          (click)="onAddToCart()"
+          aria-label="Agregar al carrito">
+          {{ addedToCart() ? '✓ Agregado al carrito' : 'Agregar al carrito' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    @if (relatedProducts().length > 0) {
+      <section class="related" aria-label="Productos relacionados">
+        <h2>Productos relacionados</h2>
+        <div class="related-grid">
+          @for (related of relatedProducts(); track related.id) {
+            <a [routerLink]="['/product', related.id]" class="related-card">
+              <img [src]="related.images[0]" [alt]="related.name" loading="lazy"/>
+              <p class="related-name">{{ related.name }}</p>
+              <p class="related-price">{{ related.price | currency:'COP':'symbol':'1.0-0' }}</p>
+            </a>
+          }
+        </div>
+      </section>
+    }
+
+  </div>
+}
+
+<!-- Estado vacío si no se encuentra el producto -->
+@if (!product()) {
+  <div class="not-found">
+    <p>Producto no encontrado</p>
+    <a routerLink="/">Volver al catálogo</a>
+  </div>
+}

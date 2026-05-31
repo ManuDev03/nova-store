@@ -1,9 +1,63 @@
-import { Component } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Product } from '../../../../core/model';
+import { CartService, ProductService } from '../../../../core/services';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [],
+  standalone: true,
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
 })
-export class ProductDetailComponent {}
+export class ProductDetailComponent implements OnInit {
+
+  private route = inject(ActivatedRoute);
+  private productService = inject(ProductService);
+  private cartService = inject(CartService);
+
+  product = signal<Product | null>(null);
+  relatedProducts = signal<Product[]>([]);
+  selectedImage = signal<string>('');
+  selectedVariant = signal<string>('');
+  addedToCart = signal<boolean>(false);
+
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (this.productService.products().length === 0) {
+      this.productService.loadProducts();
+    }
+
+    const found = this.productService.getProductById(id);
+    if (found) {
+      this.product.set(found);
+      this.selectedImage.set(found.images[0]);
+      this.selectedVariant.set(found.variants[0] ?? '');
+      this.loadRelated(found);
+    }
+  }
+
+  private loadRelated(product: Product): void {
+    const related = this.productService.products()
+      .filter(p => p.category === product.category && p.id !== product.id)
+      .slice(0, 4);
+    this.relatedProducts.set(related);
+  }
+
+  selectImage(image: string): void {
+    this.selectedImage.set(image);
+  }
+
+  selectVariant(variant: string): void {
+    this.selectedVariant.set(variant);
+  }
+
+  onAddToCart(): void {
+    if (!this.product()) return;
+    this.cartService.addToCart(this.product()!);
+    this.addedToCart.set(true);
+    setTimeout(() => this.addedToCart.set(false), 2000);
+  }
+}
