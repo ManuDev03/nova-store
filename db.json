@@ -1,0 +1,115 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Audífonos Sony WH-1000XM5",
+      "price": 349900,
+      "category": "audio",
+      "rating": 4.8,
+      "stock": 12,
+      "inStock": true,
+      "badge": "Más vendido",
+      "description": "Cancelación de ruido líder en la industria con hasta 30 horas de batería.",
+      "images": [
+        "https://picsum.photos/seed/sony1/600/600",
+        "https://picsum.photos/seed/sony2/600/600"
+      ],
+      "variants": ["Negro", "Plateado"],
+      "tags": ["inalámbrico", "noise-cancelling"]
+    },
+    {
+      "id": 2,
+      "name": "Smartwatch Samsung Galaxy Watch 7",
+      "price": 899900,
+      "category": "wearables",
+      "rating": 4.5,
+      "stock": 5,
+      "inStock": true,
+      "badge": "Nuevo",
+      "description": "Monitoreo avanzado de salud con pantalla AMOLED de 1.3 pulgadas.",
+      "images": [
+        "https://picsum.photos/seed/watch1/600/600",
+        "https://picsum.photos/seed/watch2/600/600"
+      ],
+      "variants": ["40mm", "44mm"],
+      "tags": ["salud", "deportes"]
+    },
+    {
+      "id": 3,
+      "name": "Teclado mecánico Keychron K2",
+      "price": 189900,
+      "category": "perifericos",
+      "rating": 4.7,
+      "stock": 0,
+      "inStock": false,
+      "badge": null,
+      "description": "Teclado compacto 75% con switches Cherry MX y retroiluminación RGB.",
+      "images": [
+        "https://picsum.photos/seed/keyboard1/600/600",
+        "https://picsum.photos/seed/keyboard2/600/600"
+      ],
+      "variants": ["Red Switch", "Blue Switch", "Brown Switch"],
+      "tags": ["gaming", "productividad"]
+    },
+    {
+      "id": 4,
+      "name": "Monitor LG UltraWide 34\"",
+      "price": 1450000,
+      "category": "monitores",
+      "rating": 4.6,
+      "stock": 3,
+      "inStock": true,
+      "badge": "Oferta",
+      "description": "Panel IPS ultrawide 21:9 con resolución 3440x1440 y 144Hz.",
+      "images": [
+        "https://picsum.photos/seed/monitor1/600/600",
+        "https://picsum.photos/seed/monitor2/600/600"
+      ],
+      "variants": [],
+      "tags": ["productividad", "diseño"]
+    },
+    {
+      "id": 5,
+      "name": "Cámara Sony Alpha A7 IV",
+      "price": 3200000,
+      "category": "camaras",
+      "rating": 4.9,
+      "stock": 2,
+      "inStock": true,
+      "badge": null,
+      "description": "Cámara mirrorless full-frame de 33MP con grabación 4K a 60fps.",
+      "images": [
+        "https://picsum.photos/seed/camera1/600/600",
+        "https://picsum.photos/seed/camera2/600/600"
+      ],
+      "variants": ["Solo cuerpo", "Con lente 28-70mm"],
+      "tags": ["fotografía", "video"]
+    },
+    {
+      "id": 6,
+      "name": "iPad Air M2",
+      "price": 2100000,
+      "category": "tablets",
+      "rating": 4.7,
+      "stock": 8,
+      "inStock": true,
+      "badge": "Popular",
+      "description": "Chip M2, pantalla Liquid Retina de 11 pulgadas y compatibilidad con Apple Pencil.",
+      "images": [
+        "https://picsum.photos/seed/ipad1/600/600",
+        "https://picsum.photos/seed/ipad2/600/600"
+      ],
+      "variants": ["64GB", "256GB", "512GB"],
+      "tags": ["productividad", "creatividad"]
+    }
+  ],
+  "categories": [
+    { "id": "audio", "label": "Audio" },
+    { "id": "wearables", "label": "Wearables" },
+    { "id": "perifericos", "label": "Periféricos" },
+    { "id": "monitores", "label": "Monitores" },
+    { "id": "camaras", "label": "Cámaras" },
+    { "id": "tablets", "label": "Tablets" }
+  ],
+  "cart": []
+}
