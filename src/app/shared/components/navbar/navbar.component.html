@@ -1,0 +1,14 @@
+<nav class="navbar" role="navigation" aria-label="Navegación principal">
+  <a routerLink="/" class="brand" aria-label="Nova Store - Ir al inicio">
+    Nova Store
+  </a>
+  <button
+    class="cart-btn"
+    (click)="cartService.toggleCart()"
+    [attr.aria-label]="'Abrir carrito, ' + summary().totalItems + ' productos'">
+    🛒
+    @if (summary().totalItems > 0) {
+      <span class="cart-badge">{{ summary().totalItems }}</span>
+    }
+  </button>
+</nav>

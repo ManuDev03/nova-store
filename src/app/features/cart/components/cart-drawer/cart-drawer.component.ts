@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CartService } from '../../../../core/services';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cart-drawer',
-  imports: [],
+  standalone: true,
+  imports: [CurrencyPipe],
   templateUrl: './cart-drawer.component.html',
   styleUrl: './cart-drawer.component.scss',
 })
-export class CartDrawerComponent {}
+export class CartDrawerComponent {
+
+  cartService = inject(CartService);
+
+  summary = this.cartService.summary;
+  isOpen = this.cartService.isOpen;
+}
