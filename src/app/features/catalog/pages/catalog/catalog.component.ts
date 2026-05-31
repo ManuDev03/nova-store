@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CartService, ProductService } from '../../../../core/services';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
+import { ProductFiltersComponent } from '../../components/product-filters/product-filters.component';
 import { Product } from '../../../../core/model';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, ProductFiltersComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })

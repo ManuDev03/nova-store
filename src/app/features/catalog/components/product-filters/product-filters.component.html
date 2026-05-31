@@ -1,1 +1,89 @@
-<p>product-filters works!</p>
+<aside class="filters" aria-label="Filtros de productos">
+
+  <!-- Búsqueda por texto -->
+  <div class="filter-group">
+    <label for="search">Buscar</label>
+    <input
+      id="search"
+      type="search"
+      placeholder="Buscar productos..."
+      [(ngModel)]="search"
+      (ngModelChange)="onSearchChange()"
+      aria-label="Buscar productos"/>
+  </div>
+
+  <!-- Filtro por categoría -->
+  <div class="filter-group">
+    <label for="category">Categoría</label>
+    <select
+      id="category"
+      [(ngModel)]="selectedCategory"
+      (ngModelChange)="onCategoryChange()"
+      aria-label="Filtrar por categoría">
+      <option value="">Todas</option>
+      @for (cat of categories(); track cat.id) {
+        <option [value]="cat.id">{{ cat.label }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Rango de precio -->
+  <div class="filter-group">
+    <label>Rango de precio</label>
+    <div class="price-range">
+      <input
+        type="number"
+        placeholder="Mínimo"
+        [(ngModel)]="minPrice"
+        (ngModelChange)="onPriceChange()"
+        min="0"
+        aria-label="Precio mínimo"/>
+      <span>—</span>
+      <input
+        type="number"
+        placeholder="Máximo"
+        [(ngModel)]="maxPrice"
+        (ngModelChange)="onPriceChange()"
+        min="0"
+        aria-label="Precio máximo"/>
+    </div>
+  </div>
+
+  <!-- Estado de inventario -->
+  <div class="filter-group">
+    <label for="stock">Disponibilidad</label>
+    <select
+      id="stock"
+      (change)="onStockChange($any($event.target).value)"
+      aria-label="Filtrar por disponibilidad">
+      <option value="">Todos</option>
+      <option value="true">En stock</option>
+      <option value="false">Agotados</option>
+    </select>
+  </div>
+
+  <!-- Ordenamiento -->
+  <div class="filter-group">
+    <label for="sort">Ordenar por</label>
+    <select
+      id="sort"
+      [(ngModel)]="sortBy"
+      (ngModelChange)="onSortChange()"
+      aria-label="Ordenar productos">
+      @for (option of sortOptions; track option.value) {
+        <option [value]="option.value">{{ option.label }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Botón limpiar filtros — solo aparece si hay algún filtro activo -->
+  @if (hasActiveFilters) {
+    <button
+      class="btn-reset"
+      (click)="resetFilters()"
+      aria-label="Limpiar todos los filtros">
+      Limpiar filtros
+    </button>
+  }
+
+</aside>
