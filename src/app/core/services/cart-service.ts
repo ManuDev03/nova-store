@@ -3,4 +3,4 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class Cart {}
+export class CartService {}
